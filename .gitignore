@@ -19,3 +19,6 @@
 #Ignore all files
 **/files/
 **/.ssh/
+
+#Ignore ansible retry files
+*.retry
