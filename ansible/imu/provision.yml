@@ -1,0 +1,5 @@
+---
+  ## This playbook deploys common virgin server configurations.
+
+  # file: authentication.yml
+- import_playbook: authentication.yml

@@ -1,0 +1,22 @@
+#Ignore all playbooks in the samples folder
+**/samples/
+
+#Ignore host file
+**/hosts
+**/hosts.ini
+
+#Ignore ansible config
+**/ansible.cfg
+
+#Ignore vagrant files
+**/.vagrant/
+Vagrant
+
+#Ignore all varriables
+**/group_vars/
+**/host_vars/
+**/vars/
+
+#Ignore all files
+**/files/
+**/.ssh/

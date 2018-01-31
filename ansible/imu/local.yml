@@ -1,0 +1,13 @@
+---
+## This playbook disables password based logins and enables only key based auth.
+
+# Apply common configuration to all hosts
+- become: true
+  gather_facts: no
+  hosts: local
+  connection: local
+  name: "Setup default SSH keys for the dev machine"
+  roles:
+    - local
+  vars_files:
+    - group_vars/all

@@ -1,0 +1,61 @@
+---
+
+- name: "Include vars of users.yml into the 'users' variable"
+  include_vars:
+    file: users.yml
+    name: users
+
+- name: "Make sure we have a 'wheel' group"
+  group:
+      name: wheel
+      state: present
+
+- name: "Allow 'wheel' group to have passwordless sudo"
+  lineinfile:
+    dest: /etc/sudoers
+    state: present
+    regexp: '^%wheel'
+    line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+    validate: "visudo -cf %s"
+
+- name: "Create a new user and add them to the wheel group"
+  user:
+    append: true
+    createhome: true
+    groups: wheel
+    name: "{{ item.name }}"
+    state: present
+  with_items: "{{ users.developers }}"
+
+- name: Set up multiple authorized keys and remove those not on users.yml
+  authorized_key:
+    user: "{{ item.name }}"
+    state: present
+    key: "{{ item.ssh_key }}"
+    exclusive: True
+  with_items: "{{ users.developers }}"
+
+
+
+# - name: Add identity key to authorized keys on host
+#   authorized_key: user={{ ssh_user }}
+#     key="{{ lookup('file', ssh_identity_key) }}"
+#   register: add_identity_key
+#   when: ssh_identity_key is defined and ssh_user is defined
+#
+# - name: Disable empty password login
+#   lineinfile: dest={{ sshd_config }} regexp="^#?PermitEmptyPasswords" line="PermitEmptyPasswords no"
+#   notify: restart sshd
+#
+# - name: Disable remote root login
+#   lineinfile: dest={{ sshd_config }} regexp="^#?PermitRootLogin" line="PermitRootLogin no"
+#   notify: restart sshd
+#
+# - name: Disable password login
+#   lineinfile: dest={{ sshd_config }} regexp="^#?PasswordAuthentication" line="PasswordAuthentication no"
+#   when: add_identity_key|success and not add_identity_key|skipped
+#   notify: restart sshd
+#
+# - name: Enable PAM
+#   lineinfile: dest={{ sshd_config }} regexp="^#?UsePAM" line="UsePAM yes"
+#   notify: restart sshd

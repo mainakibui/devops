@@ -1,0 +1,33 @@
+---
+
+#Local "imdevops" SSH keys setup
+- copy:
+    dest: /home/vagrant/.ssh/id_rsa
+    group: vagrant
+    mode: 0600
+    owner: vagrant
+    src: /vagrant/.ssh/id_rsa
+  name: "Private key file added for user vagrant."
+
+- copy:
+    dest: /home/vagrant/.ssh/id_rsa.pub
+    group: vagrant
+    mode: 0644
+    owner: vagrant
+    src: /vagrant/.ssh/id_rsa.pub
+  name: "Public key file added for user vagrant."
+
+- copy:
+    dest: /home/vagrant/.ssh/known_hosts
+    group: vagrant
+    mode: 0644
+    owner: vagrant
+    src: /vagrant/.ssh/known_hosts
+  name: "Known hosts file added for user vagrant."
+  notify: "Restart SSH service"
+
+#Local "imdevops" Packages installation
+- name: install basic packages
+  apt: "name={{item}} state=present update_cache=yes"
+  with_items:
+    - "{{ packages }}"
