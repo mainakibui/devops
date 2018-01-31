@@ -10,7 +10,6 @@
 
 #Ignore vagrant files
 **/.vagrant/
-Vagrant
 
 #Ignore all varriables
 **/group_vars/
