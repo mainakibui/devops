@@ -1,5 +1,14 @@
 ---
 
+# - name: Loop over the dictionary
+#   debug: msg="Key={{ item.key }} value={{ item.name }}"
+#   with_list: "{{ ssh_keys }}"
+
+# - name: write multiline string
+#   copy:
+#     content: "{{ multiline_str }}"
+#     dest: /path/to/file
+
 - name: "Include vars of users.yml into the 'users' variable"
   include_vars:
     file: users.yml
@@ -25,15 +34,15 @@
     groups: wheel
     name: "{{ item.name }}"
     state: present
-  with_items: "{{ users.developers }}"
+  with_items: "{{ ssh_keys }}"
 
 - name: Set up multiple authorized keys and remove those not on users.yml
   authorized_key:
     user: "{{ item.name }}"
     state: present
-    key: "{{ item.ssh_key }}"
+    key: "{{ item.key }}"
     exclusive: True
-  with_items: "{{ users.developers }}"
+  with_items: "{{ ssh_keys }}"
 
 
 

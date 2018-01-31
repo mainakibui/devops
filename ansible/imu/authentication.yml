@@ -3,10 +3,12 @@
 
 # Apply common configuration to all hosts
 - name: Secure SSH login. (Passwordless login)
+  gather_facts: no
   become: yes
-  hosts: all
+  hosts: all-servers
   vars_files:
   - group_vars/all
+  - group_vars/secrets
 
   roles:
     - secure-ssh
