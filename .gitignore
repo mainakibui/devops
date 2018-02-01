@@ -12,9 +12,8 @@
 **/.vagrant/
 
 #Ignore all varriables
-**/group_vars/
-**/host_vars/
 **/vars/
+secrets
 
 #Ignore all files
 **/files/
