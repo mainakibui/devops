@@ -1,3 +1,8 @@
+#Create your ssh key
+
+ssh-keygen -t rsa -b 4096 -C "your_email@fao.org"
+
+
 The stack can be deployed using the following command:
 
 ansible-playbook -i hosts provision.yml
