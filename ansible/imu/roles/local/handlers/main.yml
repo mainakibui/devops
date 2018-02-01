@@ -1,5 +1,6 @@
 ---
 
+#Restart the ssh service
 - name: Restart SSH service
   service:
     name: ssh

@@ -1,5 +1,6 @@
 ---
 
+## ADD USER PROFILES
 #Add new ssh users and their keys
 
 - name: "Make sure we have a 'wheel' group"
@@ -32,8 +33,10 @@
     key: "{{ item.key }}"
     exclusive: True
   with_items: "{{ ssh_users }}"
-  when: item.name != "nobody"
+  register: add_identity_key
+  when: item.name != "nobody" and item.key is defined and item.name is defined
 
+## REMOVE USER PROFILES
 #Remove users with uid > 1000 and not in the ssh_users list
 
 - name: Fetch a list of all the current users in the selected server/s
@@ -55,27 +58,21 @@
   with_items: "{{ current_users.stdout_lines }}"
   when: item not in approved_users
 
+## SECURE SSH
+#Secure ssh service from common exploits
+- name: Disable empty password login
+  lineinfile: dest={{ sshd_config }} regexp="^#?PermitEmptyPasswords" line="PermitEmptyPasswords no"
+  notify: Restart SSH service
 
+- name: Disable remote root login
+  lineinfile: dest={{ sshd_config }} regexp="^#?PermitRootLogin" line="PermitRootLogin no"
+  notify: Restart SSH service
 
-# - name: Add identity key to authorized keys on host
-#   authorized_key: user={{ ssh_user }}
-#     key="{{ lookup('file', ssh_identity_key) }}"
-#   register: add_identity_key
-#   when: ssh_identity_key is defined and ssh_user is defined
-#
-# - name: Disable empty password login
-#   lineinfile: dest={{ sshd_config }} regexp="^#?PermitEmptyPasswords" line="PermitEmptyPasswords no"
-#   notify: restart sshd
-#
-# - name: Disable remote root login
-#   lineinfile: dest={{ sshd_config }} regexp="^#?PermitRootLogin" line="PermitRootLogin no"
-#   notify: restart sshd
-#
-# - name: Disable password login
-#   lineinfile: dest={{ sshd_config }} regexp="^#?PasswordAuthentication" line="PasswordAuthentication no"
-#   when: add_identity_key|success and not add_identity_key|skipped
-#   notify: restart sshd
-#
-# - name: Enable PAM
-#   lineinfile: dest={{ sshd_config }} regexp="^#?UsePAM" line="UsePAM yes"
-#   notify: restart sshd
+- name: Disable password login
+  lineinfile: dest={{ sshd_config }} regexp="^#?PasswordAuthentication" line="PasswordAuthentication no"
+  when: add_identity_key|success and not add_identity_key|skipped
+  notify: Restart SSH service
+
+- name: Enable PAM
+  lineinfile: dest={{ sshd_config }} regexp="^#?UsePAM" line="UsePAM yes"
+  notify: Restart SSH service

@@ -2,4 +2,7 @@
 # all non-secret things
 
 ansible_python_interpreter: /usr/bin/python3
+
 packages: [git,apg]
+
+sshd_config: /etc/ssh/sshd_config
