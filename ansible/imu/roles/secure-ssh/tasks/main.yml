@@ -34,14 +34,21 @@
   with_items: "{{ ssh_users }}"
   when: item.name != "nobody"
 
-#Remove users wuth uid > 1000 and not in the ssh_users list
+#Remove users with uid > 1000 and not in the ssh_users list
 
 - name: Fetch a list of all the current users in the selected server/s
   shell: "getent passwd | awk -F: '$3 > 1000 {print $1}'"
   register: current_users
+  changed_when: false
+
+# - debug:
+#     var: current_users.stdout_lines
 
 - name: Fetch a list of all currently approved users as per our config varriable ssh_users
   set_fact: approved_users="{{ ssh_users | map(attribute='name') | list }}"
+
+# - debug:
+#     var: approved_users
 
 - name: Now removing unapproved user profiles still in the selected server/s
   user: name={{item}} state=absent remove=yes
