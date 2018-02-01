@@ -1,6 +1,6 @@
 #Create your ssh key
 
-ssh-keygen -t rsa -b 4096 -C "your_email@fao.org"
+ssh-keygen -t rsa -b 4096 -C "your_email@orgname.org"
 
 
 The stack can be deployed using the following command:
