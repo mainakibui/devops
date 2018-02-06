@@ -1,6 +1,7 @@
 # Ansible Vagrant Ubuntu Playbook
 
 ###### To Do
+- [x] Deploy and manage ubuntu based vagrant dev box 
 - [x] Manage users
 - [x] Secure SSH
 - [ ] Manage firewall
