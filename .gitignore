@@ -18,6 +18,8 @@ secrets
 #Ignore all files
 **/files/
 **/.ssh/
+**/git/
+**/shorewall/
 
 #Ignore ansible retry files
 *.retry

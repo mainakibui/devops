@@ -1,0 +1,14 @@
+---
+## This playbook sets up shorewall firewall.
+
+# Apply firewall configuration to all hosts
+- name: Shorewall firewall.
+  gather_facts: no
+  become: yes
+  hosts: all-servers
+  vars_files:
+  - group_vars/all
+  - group_vars/secrets
+
+  roles:
+    - shorewall-firewall

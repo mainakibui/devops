@@ -3,3 +3,6 @@
 
   # file: authentication.yml
 - import_playbook: authentication.yml
+
+  # file: firewall.yml
+- import_playbook: firewall.yml

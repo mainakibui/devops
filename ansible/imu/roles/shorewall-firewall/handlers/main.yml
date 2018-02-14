@@ -1,0 +1,8 @@
+---
+
+#Reload the Shorewall service
+
+- name: Restart shorewall service
+  service:
+    name:  shorewall
+    state: restarted

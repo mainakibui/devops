@@ -1,0 +1,11 @@
+---
+
+## SETUP THE FIREWALL PACKAGE
+#Install and configure firewall
+
+- name: "Install the Firewall package"
+  apt: "name={{item}} state=present update_cache=yes"
+  with_items:
+    - shorewall
+    - fail2ban
+  #notify: shorewall restart

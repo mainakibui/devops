@@ -1,7 +1,7 @@
 # Ansible Vagrant Ubuntu Playbook
 
 ###### To Do
-- [x] Deploy and manage ubuntu based vagrant dev box 
+- [x] Deploy and manage ubuntu based vagrant dev box
 - [x] Manage users
 - [x] Secure SSH
 - [ ] Manage firewall
@@ -42,16 +42,24 @@ Make sure you add your public key to pageant putty authentication agent and reff
 
 ssh-keygen -t rsa -b 4096 -C "your_email@orgname.org"
 
+## VAGRANT
+
+- To start the vagrant box: *vagrant up*
+- To redeploy the vagrant box *vagrant up --provision* (Reset the machine to default)
+- To stop the vagrant machine *vagrant halt*
+- To delete the machine *vagrant destroy*
+
+## ANSIBLE
+
+#Test connection to the servers
+`ansible all-servers -m ping -u username --become`
+
+#Run a playbook
 
 The stack can be deployed using the following command:
 
-ansible-playbook -i hosts provision.yml
+All hosts: *ansible-playbook -i hosts provision.yml*
 
-ansible-playbook -i hosts -l puppet-master provision.yml
+Single group: *ansible-playbook -i hosts -l puppet-master provision.yml*
 
-ansible-playbook -i hosts -l localhost localhost.yml
-
-
-ansible-playbook -i hosts -l local localhost.yml
-
-vagrant up --provision (Reset the machinr to default)
+Single host: *ansible-playbook -i hosts -l localhost localhost.yml*
