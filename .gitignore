@@ -20,6 +20,7 @@ secrets
 **/.ssh/
 **/git/
 **/shorewall/
+**/tmp/
 
 #Ignore ansible retry files
 *.retry
